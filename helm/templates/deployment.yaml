@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bullsrv
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: bullsrv
+  template:
+    metadata:
+      labels:
+        app: bullsrv
+    spec:
+      containers: 
+      - name: bullsrv
+        image: {{ .Values.image }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env:
+        - name : TEST
+          valueFrom:
+            configMapKeyRef:
+              name: bullsrv-configmap
+              key: TEST
+
+        
+        volumeMounts:
+        - name: config
+          mountPath: "/config"
+          readOnly: true
+
+      volumes:
+      - name: config
+        configMap:
+          name: bullsrv-configmap
+          items:
+          - key: "ca.cert"
+            path: "ca.cert"

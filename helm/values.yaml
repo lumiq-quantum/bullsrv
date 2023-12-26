@@ -1,0 +1,5 @@
+replicaCount: 3
+gateway: "vishal-gateway"
+host: "'*'"
+image: ghcr.io/lumiq-quantum/bullsrv:latest
+test: test

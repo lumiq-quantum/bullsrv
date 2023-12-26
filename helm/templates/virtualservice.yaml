@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: bullsrv
+spec:
+  gateways: [ {{ .Values.gateway }} ]
+  hosts: [ {{ .Values.host }} ]
+  http:
+  - match:
+    - uri:
+        prefix: /bullsrv/
+    - uri:
+        prefix: /bullsrv
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: bullsrv
+        port:
+          number: 80
